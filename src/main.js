@@ -4,8 +4,13 @@ import router from './router'
 import store from './store'
 // 导入normalize.css 抹平差异
 import 'normalize.css'
-Vue.config.productionTip = false
 
+// 导入vant组件库
+import Vant from 'vant'
+import 'vant/lib/index.css'
+Vue.use(Vant)
+
+Vue.config.productionTip = false
 new Vue({
   router,
   store,
