@@ -2,6 +2,9 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+// 导入flexible 根据设备尺寸改变html的fontsize大小
+import 'amfe-flexible'
+
 // 导入normalize.css 抹平差异
 import 'normalize.css'
 
