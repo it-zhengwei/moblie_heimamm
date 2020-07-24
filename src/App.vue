@@ -2,6 +2,8 @@
   <div>
     hah
     <van-button type="warning">警告按钮</van-button>
+    <i class="iconfont iconxingxing2"></i>
+    <i class="iconfont iconbianzu4"></i>
   </div>
 </template>
 
@@ -9,4 +11,4 @@
 export default {}
 </script>
 
-<style></style>
+<style lang="less"></style>

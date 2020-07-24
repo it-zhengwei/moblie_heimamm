@@ -2,6 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+// 导入字体图标样式
+import '@/style/icon.less'
 // 导入flexible 根据设备尺寸改变html的fontsize大小
 import 'amfe-flexible'
 
