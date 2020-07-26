@@ -49,12 +49,12 @@
         </li>
         <li>
           <span>昨日阅读<i>+300</i></span>
-          <h1>17</h1>
+          <h1>297</h1>
           <p>阅读总数</p>
         </li>
         <li>
           <span>昨日阅读<i>+300</i></span>
-          <h1>17</h1>
+          <h1>187</h1>
           <p>阅读总数</p>
         </li>
       </ul>
@@ -186,6 +186,7 @@ export default {
       font-size: 14px;
       font-family: PingFangSC, PingFangSC-Semibold;
       font-weight: 600;
+      color: #181a39;
     }
     ul {
       display: flex;
@@ -197,6 +198,7 @@ export default {
           font-size: 10px;
           font-family: PingFangSC, PingFangSC-Regular;
           font-weight: 400;
+          color: #b4b4bd;
           i {
             font-style: normal;
             color: #00b8d4;
@@ -206,11 +208,13 @@ export default {
           font-size: 21px;
           font-family: DINAlternate, DINAlternate-Bold;
           font-weight: 700;
+          color: #181a39;
         }
         p {
           font-size: 12px;
           font-family: PingFangSC, PingFangSC-Regular;
           font-weight: 400;
+          color: #545671;
         }
       }
     }
