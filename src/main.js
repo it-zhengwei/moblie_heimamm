@@ -3,9 +3,9 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 // 导入初始化样式
-import '@/style/var.less'
+import '@/style/base.less'
 // 导入字体图标样式
-import '@/style/icon.less'
+import '@/style/icon.css'
 // 导入flexible 根据设备尺寸改变html的fontsize大小
 import 'amfe-flexible'
 

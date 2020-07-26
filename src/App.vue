@@ -2,9 +2,10 @@
   <div>
     <router-view></router-view>
     <van-tabbar
+      v-if="$route.meta.isShow == true"
       v-model="active"
       active-color="#e40137"
-      inactive-color="#000"
+      inactive-color="#b4b4bd"
       route
       placeholder
       class="tabbar"
