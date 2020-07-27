@@ -15,8 +15,11 @@ import 'normalize.css'
 // 导入vant组件库
 import Vant from 'vant'
 import 'vant/lib/index.css'
+// 导入navBar组件
+import navBar from '@/components/navBar.vue'
 Vue.use(Vant)
-
+// 全局注册
+Vue.component(navBar.name, navBar)
 Vue.config.productionTip = false
 new Vue({
   router,
