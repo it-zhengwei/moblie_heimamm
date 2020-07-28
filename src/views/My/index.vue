@@ -32,11 +32,11 @@
         </li>
       </ul>
       <div class="botton">
-        <cell
-          title="我的岗位"
-          :value="userInfo.position"
-          icon="iconicon_mine_gangwei"
-        ></cell>
+        <cell title="我的岗位" icon="iconicon_mine_gangwei">
+          <template #default>
+            {{ userInfo.position }}
+          </template>
+        </cell>
       </div>
     </div>
     <div class="data">
@@ -66,36 +66,36 @@
       </ul>
     </div>
     <div class="cellList">
-      <cell
-        title="我的面试分享"
-        value="21"
-        icon="iconicon_mine_mianjing"
-      ></cell>
-      <cell
-        title="我的消息"
-        :value="userInfo.systemMessages"
-        icon="iconicon_mine_xiaoxi"
-      ></cell>
-      <cell
-        title="收藏的题库"
-        :value="userInfo.collectQuestions.length"
-        icon="iconicon_mine_tikushoucang"
-      ></cell>
-      <cell
-        title="收藏的企业"
-        value="32"
-        icon="iconicon_mine_qiyeshoucang"
-      ></cell>
-      <cell
-        title="我的错题"
-        :value="userInfo.errorQuestions.length"
-        icon="iconicon_mine_cuoti"
-      ></cell>
-      <cell
-        title="收藏的面试经验"
-        :value="userInfo.collectArticles.length"
-        icon="iconbtn_shoucang_sel"
-      ></cell>
+      <cell title="我的面试分享" icon="iconicon_mine_mianjing">
+        <template #default>
+          21
+        </template></cell
+      >
+      <cell title="我的消息" icon="iconicon_mine_xiaoxi">
+        <template #default>
+          {{ userInfo.systemMessages }}
+        </template></cell
+      >
+      <cell title="收藏的题库" icon="iconicon_mine_tikushoucang">
+        <template #default>
+          {{ userInfo.collectQuestions.length }}
+        </template></cell
+      >
+      <cell title="收藏的企业" icon="iconicon_mine_qiyeshoucang">
+        <template #default>
+          32
+        </template></cell
+      >
+      <cell title="我的错题" icon="iconicon_mine_cuoti">
+        <template #default>
+          {{ userInfo.errorQuestions.length }}
+        </template></cell
+      >
+      <cell title="收藏的面试经验" icon="iconbtn_shoucang_sel">
+        <template #default>
+          {{ userInfo.collectArticles.length }}
+        </template></cell
+      >
     </div>
   </div>
 </template>

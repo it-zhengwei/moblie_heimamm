@@ -87,40 +87,31 @@ export default {
         return
       }
       // 验证手机号是否正确
-      this.$refs.form
-        .validate('phone')
-        .then(() => {
-          // 加载提示
-          this.$toast.loading({
-            message: '获取验证码中...',
-            ducation: 0
-          })
-          // 设置倒计时
-          this.delay = 60
-          // 设置按钮文本
+      this.$refs.form.validate('phone').then(() => {
+        // 加载提示
+        this.$toast.loading({
+          message: '获取验证码中...',
+          ducation: 0
+        })
+        // 设置倒计时
+        this.delay = 60
+        // 设置按钮文本
+        this.btnText = `${this.delay}S后重新获取`
+        const timeID = setInterval(() => {
+          this.delay--
           this.btnText = `${this.delay}S后重新获取`
-          const timeID = setInterval(() => {
-            this.delay--
-            this.btnText = `${this.delay}S后重新获取`
 
-            if (this.delay === 0) {
-              this.btnText = '获取验证码'
-              // 清空定时器
-              clearInterval(timeID)
-            }
-          }, 1000)
-          getCode({ mobile: this.phone })
-            .then(res => {
-              // 获取成功提示用户
-              this.$toast.success(res.data)
-            })
-            .catch(err => {
-              window.console.log(err)
-            })
+          if (this.delay === 0) {
+            this.btnText = '获取验证码'
+            // 清空定时器
+            clearInterval(timeID)
+          }
+        }, 1000)
+        getCode({ mobile: this.phone }).then(res => {
+          // 获取成功提示用户
+          this.$toast.success(res.data)
         })
-        .catch(err => {
-          window.console.log(err)
-        })
+      })
     },
     // 导航栏左边的箭头功能
     onClickLeft () {

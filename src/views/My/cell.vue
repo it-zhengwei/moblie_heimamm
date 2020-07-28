@@ -7,6 +7,12 @@
       <template #right-icon>
         <i class="iconfont iconicon_more"></i>
       </template>
+      <template #default>
+        <slot name="default"></slot>
+      </template>
+      <!-- <template #title>
+        <slot name="title"></slot>
+      </template> -->
     </van-cell>
   </div>
 </template>

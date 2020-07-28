@@ -11,6 +11,12 @@ import find from '@/views/Find/index.vue'
 import my from '@/views/My/index.vue'
 // 登录组件
 import login from '@/views/login/index.vue'
+// 我的资料组件
+import profile from '@/views/My/profile.vue'
+// 修改昵称组件
+import setNickname from '@/views/My/setNickname.vue'
+// 我的消息组件
+import message from '@/views/My/message.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -23,7 +29,15 @@ const routes = [
   // 我的路由配置
   { path: '/my', component: my, meta: { isShow: true } },
   // 登录路由配置
-  { path: '/', component: login }
+  { path: '/login', component: login },
+  // 路由重定向
+  { path: '/', redirect: '/login' },
+  // 我的资料路由配置
+  { path: '/profile', component: profile },
+  // 修改昵称路由配置
+  { path: '/setNickname', component: setNickname },
+  // 我的消息路由配置
+  { path: '/message', component: message }
 ]
 
 const router = new VueRouter({
