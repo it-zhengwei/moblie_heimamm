@@ -1,25 +1,31 @@
 // 导入副本
-import copy from '@/utils/copy.js'
+import req from '@/utils/req.js'
 // 获取用户信息
 function getUserInfo () {
-  return copy({
-    url: '/au/info'
+  return req({
+    url: '/au/info',
+    // 自定义一个属性来判断请求需不需要携带token
+    needToken: true
   })
 }
 // 修改用户信息
 function editUserInfo (data) {
-  return copy({
+  return req({
     url: '/au/edit',
     method: 'post',
-    data
+    data,
+    // 自定义一个属性来判断请求需不需要携带token
+    needToken: true
   })
 }
 // 文件上传
 function upload (data) {
-  return copy({
+  return req({
     url: '/upload',
     method: 'post',
-    data
+    data,
+    // 自定义一个属性来判断请求需不需要携带token
+    needToken: true
   })
 }
 // 暴露出去

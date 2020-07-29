@@ -6,7 +6,7 @@
           <h2>{{ userInfo.nickname }}</h2>
           <p>{{ userInfo.intro }}</p>
         </div>
-        <div class="right">
+        <div class="right" @click="profile">
           <img :src="userInfo.avatar" alt="" />
         </div>
       </div>
@@ -103,13 +103,14 @@
 <script>
 // 导入mapState
 import { mapState } from 'vuex'
-// 导入cell单元格组件
-import cell from './cell.vue'
+
 export default {
   name: 'my',
-  // 注册
-  components: {
-    cell
+  methods: {
+    // 点击跳转到我的资料页面
+    profile () {
+      this.$router.push('/profile')
+    }
   },
   // 计算属性
   computed: {
@@ -117,9 +118,11 @@ export default {
     ...mapState(['userInfo']),
     // 计算正确率
     accuracy () {
-      return ((this.userInfo.submitNum - this.userInfo.errorNum) / 100).toFixed(
-        1
-      )
+      return (
+        ((this.userInfo.submitNum - this.userInfo.errorNum) /
+          this.userInfo.submitNum) *
+        100
+      ).toFixed(1)
     }
   }
 }

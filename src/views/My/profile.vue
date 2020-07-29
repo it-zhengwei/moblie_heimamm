@@ -10,29 +10,29 @@
     <div class="top">
       <cell title="头像">
         <template #default>
-          <img src="@/assets/01.jpg" alt="" />
+          <img :src="userInfo.avatar" alt="" />
         </template>
       </cell>
     </div>
     <div class="middle">
       <cell title="昵称">
         <template #default>
-          <span>续命咖啡</span>
+          <span>{{ userInfo.nickname }}</span>
         </template>
       </cell>
       <cell title="性别">
         <template #default>
-          <span>男</span>
+          <span>{{ GETGENDER }}</span>
         </template>
       </cell>
       <cell title="地区">
         <template #default>
-          <span>北京</span>
+          <span>{{ GETCITY }}</span>
         </template>
       </cell>
       <cell title="个人简介" class="last">
         <template #default>
-          <span class="individual">主任有点懒,什么都没有写</span>
+          <span class="individual">{{ userInfo.intro }}</span>
         </template>
       </cell>
     </div>
@@ -41,16 +41,21 @@
 </template>
 
 <script>
-// 导入cell单元格组件
-import cell from './cell.vue'
+// 导入map辅助函数
+import { mapState, mapGetters } from 'vuex'
 export default {
-  // 注册
-  components: {
-    cell
+  // 计算属性
+  computed: {
+    // 展开state的userInfo内容
+    ...mapState(['userInfo']),
+    // 展开getters里的性别  city
+    ...mapGetters(['GETGENDER', 'GETCITY'])
   },
   methods: {
     // 顶部返回按钮触发的事件
-    onClickLeft () {}
+    onClickLeft () {
+      this.$router.go(-1)
+    }
   }
 }
 </script>

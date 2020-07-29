@@ -50,6 +50,8 @@
 </template>
 
 <script>
+// 导入mapMutation辅助函数
+import { mapMutations } from 'vuex'
 // 导入设置token方法
 import { setToken } from '@/utils/local.js'
 // 导入接口
@@ -65,6 +67,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['SETUSERINFO', 'SETLOGINSTATUS']),
     // 全部验证成功执行的函数
     submit () {
       // 登录请求
@@ -74,10 +77,20 @@ export default {
         // 给响应的数据的图片地址拼接基地址
         res.data.user.avatar = process.env.VUE_APP_URL + res.data.user.avatar
         // 把响应的用户信息保存到vuex
-        this.$store.commit('setUserInfo', res.data.user)
-        this.$router.push('/my')
+        this.SETUSERINFO(res.data.user)
+        // 修改vuex的登录状态
+        this.SETLOGINSTATUS(true)
+
         // 提示用户
         this.$toast.success('登录成功')
+        // 判断登录后跳转去哪  动态
+        if (this.$route.query.target) {
+          // 跳转到进不去的目标页面
+          this.$router.push(this.$route.query.target)
+        } else {
+          // 跳转到发现页
+          this.$router.push('/find')
+        }
       })
     },
     // 获取验证码
@@ -115,7 +128,15 @@ export default {
     },
     // 导航栏左边的箭头功能
     onClickLeft () {
-      window.console.log('哈哈')
+      // 如果上一个页面是需要登录的页面 如果当前路由携带了目标页面地址 说明是被打回来的 需要登录  就返回发现页
+      if (this.$route.query.target) {
+        // 上一个页面是需要登录页
+        // 切换到发现页
+        this.$router.push('/find')
+      } else {
+        // 如果上一个页面是不需要登录的页面  就返回上一页
+        this.$router.go(-1)
+      }
     }
   }
 }

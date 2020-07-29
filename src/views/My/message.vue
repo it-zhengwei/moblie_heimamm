@@ -42,13 +42,7 @@
 </template>
 
 <script>
-// 导入cell组件
-import cell from './cell.vue'
 export default {
-  // 注册
-  components: {
-    cell
-  },
   methods: {
     // 返回按钮触发的事件
     onClickLeft () {},
