@@ -12,7 +12,7 @@ import my from '@/views/My/index.vue'
 // 登录组件
 import login from '@/views/login/index.vue'
 // 我的资料组件
-import profile from '@/views/My/profile.vue'
+import profile from '@/views/profile/index.vue'
 // 修改昵称组件
 import setNickname from '@/views/My/setNickname.vue'
 // 我的消息组件
