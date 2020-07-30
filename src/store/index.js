@@ -6,7 +6,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     islogin: false,
-    userInfo: ''
+    userInfo: '',
+    cityList: cityList
   },
   mutations: {
     // 修改用户信息
@@ -15,7 +16,11 @@ export default new Vuex.Store({
     },
     // 修改登录状态
     SETLOGINSTATUS (state, data) {
-      state.islogin = true
+      state.islogin = data
+    },
+    // 修改部分用户数据
+    SETONEUSERINFO (state, { name, value }) {
+      state.userInfo[name] = value
     }
   },
   getters: {

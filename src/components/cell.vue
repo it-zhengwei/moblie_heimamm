@@ -1,6 +1,6 @@
 <template>
   <div class="cell">
-    <van-cell :title="title" :value="value">
+    <van-cell :title="title" :value="value" @click="click">
       <template #icon>
         <i class="iconfont" :class="icon"></i>
       </template>
@@ -20,7 +20,12 @@
 <script>
 export default {
   name: 'cell',
-  props: ['title', 'value', 'icon']
+  props: ['title', 'value', 'icon'],
+  methods: {
+    click () {
+      this.$emit('click')
+    }
+  }
 }
 </script>
 

@@ -20,12 +20,12 @@
           <span>{{ userInfo.nickname }}</span>
         </template>
       </cell>
-      <cell title="性别">
+      <cell title="性别" @click="showGender = true">
         <template #default>
           <span>{{ GETGENDER }}</span>
         </template>
       </cell>
-      <cell title="地区">
+      <cell title="地区" @click="showCity = true">
         <template #default>
           <span>{{ getCity }}</span>
         </template>
@@ -36,26 +36,140 @@
         </template>
       </cell>
     </div>
-    <van-button class="btn" text="退出登录" size="large"></van-button>
+    <van-button
+      class="btn"
+      text="退出登录"
+      size="large"
+      @click="logout"
+    ></van-button>
+
+    <!-- 性别弹出框 -->
+    <van-popup v-model="showGender" position="bottom" @closed="onCancel">
+      <van-picker
+        title="修改性别"
+        show-toolbar
+        :columns="genderColumns"
+        @confirm="onConfirm"
+        @cancel="onCancel"
+        :default-index="userInfo.gender"
+        ref="genderPicker"
+      />
+    </van-popup>
+
+    <!-- 省市区弹出框 -->
+    <van-popup v-model="showCity" position="bottom" @closed="cityCancel">
+      <van-area
+        :value="userInfo.area"
+        ref="area"
+        title="修改省市"
+        :area-list="cityList"
+        :columns-num="2"
+        :columns-placeholder="['请选择', '请选择']"
+        @confirm="cityConfirm"
+        @cancel="cityCancel"
+      />
+    </van-popup>
   </div>
 </template>
 
 <script>
+// 导入api
+import { editUserInfo } from '@/api/userInfo.js'
+// 导入removeToken
+import { removeToken } from '@/utils/local.js'
 // 导入map辅助函数
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapMutations } from 'vuex'
 export default {
+  data () {
+    return {
+      // 控制性别弹出框是否显示
+      showGender: false,
+      // 控制城市弹出框是否显示
+      showCity: false,
+      // 性别数组
+      genderColumns: ['未知', '男', '女']
+    }
+  },
   // 计算属性
   computed: {
     // 展开state的userInfo内容
-    ...mapState(['userInfo']),
+    ...mapState(['userInfo', 'cityList']),
     // 展开getters里的性别  city
     ...mapGetters(['GETGENDER', 'getCity'])
   },
   methods: {
+    ...mapMutations(['SETUSERINFO', 'SETLOGINSTATUS', 'SETONEUSERINFO']),
+    // 城市确认功能
+    cityConfirm (data) {
+      this.$toast.loading({
+        message: '修改中...',
+        ducation: 0
+      })
+      editUserInfo({ area: data[1].code }).then(() => {
+        // 提示用户
+        this.$toast.success('修改成功')
+        // 关闭弹框
+        this.showCity = false
+        // 更新vuex数据
+        this.SETONEUSERINFO({ name: 'area', value: data[1].code })
+      })
+    },
+    // 城市取消功能
+    cityCancel () {
+      // 关闭弹出框
+      this.showCity = false
+      // 重置
+      this.$refs.area.reset(this.userInfo.area)
+    },
+    // 性别确认功能
+    onConfirm (value, index) {
+      // 加载提示
+      this.$toast.loading({
+        message: '修改中...',
+        ducation: 0
+      })
+      // 更新远程仓库的数据
+      editUserInfo({ gender: index }).then(() => {
+        // 更新vuex的gender数据
+        this.SETONEUSERINFO({ name: 'gender', value: index })
+        // 提示用户
+        this.$toast.success('修改成功')
+        // 关闭弹框
+        this.showGender = false
+      })
+    },
+    // 性别取消功能
+    onCancel () {
+      // 重置
+      this.$refs.genderPicker.setColumnIndex(0, this.userInfo.gender)
+      // 关闭弹框
+      this.showGender = false
+    },
     // 顶部返回按钮触发的事件
     onClickLeft () {
       // 返回我的页面
       this.$router.push('/my')
+    },
+    // 退出登录
+    logout () {
+      // 提示用户
+      this.$dialog
+        .confirm({
+          title: '提示',
+          message: '你确定退出吗!!'
+        })
+        .then(() => {
+          // 删除token
+          removeToken()
+          // 清空用户信息
+          this.SETUSERINFO('')
+          // 改变登录状态
+          this.SETLOGINSTATUS(false)
+          this.$toast.success('退出成功')
+          // 跳转到发现页
+          this.$router.push('/find')
+        })
+        .catch(() => {})
     }
   }
 }
