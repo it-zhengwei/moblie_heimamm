@@ -8,14 +8,14 @@
       </navBar>
     </div>
     <div class="top">
-      <cell title="头像">
+      <cell title="头像" @click="setNickname('avatar')">
         <template #default>
           <img :src="userInfo.avatar" alt="" />
         </template>
       </cell>
     </div>
     <div class="middle">
-      <cell title="昵称">
+      <cell title="昵称" @click="setNickname('nickname')">
         <template #default>
           <span>{{ userInfo.nickname }}</span>
         </template>
@@ -30,7 +30,7 @@
           <span>{{ getCity }}</span>
         </template>
       </cell>
-      <cell title="个人简介" class="last">
+      <cell title="个人简介" class="last" @click="setNickname('intro')">
         <template #default>
           <span class="individual">{{ userInfo.intro }}</span>
         </template>
@@ -99,6 +99,10 @@ export default {
   },
   methods: {
     ...mapMutations(['SETUSERINFO', 'SETLOGINSTATUS', 'SETONEUSERINFO']),
+    // 跳转到setNickname修改页面
+    setNickname (key) {
+      this.$router.push('/setNickname?key=' + key)
+    },
     // 城市确认功能
     cityConfirm (data) {
       this.$toast.loading({

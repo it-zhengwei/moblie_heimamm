@@ -14,7 +14,7 @@ import login from '@/views/login/index.vue'
 // 我的资料组件
 import profile from '@/views/profile/index.vue'
 // 修改昵称组件
-import setNickname from '@/views/My/setNickname.vue'
+import setNickname from '@/views/setNickname/index.vue'
 // 我的消息组件
 import message from '@/views/My/message.vue'
 // 导入store
@@ -42,7 +42,7 @@ const routes = [
   // 我的资料路由配置
   { path: '/profile', component: profile, meta: { login: true } },
   // 修改昵称路由配置
-  { path: '/setNickname', component: setNickname },
+  { path: '/setNickname', component: setNickname, meta: { login: true } },
   // 我的消息路由配置
   { path: '/message', component: message }
 ]

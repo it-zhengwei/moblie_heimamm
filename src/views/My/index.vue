@@ -32,7 +32,11 @@
         </li>
       </ul>
       <div class="botton">
-        <cell title="我的岗位" icon="iconicon_mine_gangwei">
+        <cell
+          title="我的岗位"
+          @click="editStation('position')"
+          icon="iconicon_mine_gangwei"
+        >
           <template #default>
             {{ userInfo.position }}
           </template>
@@ -110,6 +114,11 @@ export default {
     // 点击跳转到我的资料页面
     profile () {
       this.$router.push('/profile')
+    },
+    // 修改岗位
+    editStation (key) {
+      // 跳转到编辑页面
+      this.$router.push('/setNickname?key=' + key)
     }
   },
   // 计算属性
