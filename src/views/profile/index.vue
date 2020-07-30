@@ -27,7 +27,7 @@
       </cell>
       <cell title="地区">
         <template #default>
-          <span>{{ GETCITY }}</span>
+          <span>{{ getCity }}</span>
         </template>
       </cell>
       <cell title="个人简介" class="last">
@@ -49,12 +49,13 @@ export default {
     // 展开state的userInfo内容
     ...mapState(['userInfo']),
     // 展开getters里的性别  city
-    ...mapGetters(['GETGENDER', 'GETCITY'])
+    ...mapGetters(['GETGENDER', 'getCity'])
   },
   methods: {
     // 顶部返回按钮触发的事件
     onClickLeft () {
-      this.$router.go(-1)
+      // 返回我的页面
+      this.$router.push('/my')
     }
   }
 }

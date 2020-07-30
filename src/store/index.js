@@ -19,11 +19,13 @@ export default new Vuex.Store({
     }
   },
   getters: {
+    // 计算性别
     GETGENDER (state) {
       const arr = ['未知', '男', '女']
       return arr[state.userInfo.gender]
     },
-    GETCITY (state) {
+    // 计算城市
+    getCity (state) {
       return cityList.city_list[state.userInfo.area]
     }
   },

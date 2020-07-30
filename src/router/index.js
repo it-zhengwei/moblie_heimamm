@@ -60,8 +60,6 @@ VueRouter.prototype.push = function push (location, onResolve, onReject) {
 // 注册导航守卫
 // 登录验证  判断切换的路由的元信息是否要登录 如果不用登录就允许通过 如果要登录就判断vuex的登录状态 如果登录状态是true 就允许通过 否则路由切换到登录页
 router.beforeEach((to, from, next) => {
-  window.console.log('to:', to)
-  window.console.log('from:', from)
   // 判断切换的路由是否要登录
   if (to.meta.login) {
     // 判断是否登录了
