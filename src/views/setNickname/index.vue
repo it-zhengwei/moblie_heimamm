@@ -39,21 +39,21 @@ export default {
       // 上传的图片，预览的图片
       fileList: [{ url: '', status: '', message: '' }],
       // id
-      avatarId: ''
+      avatarId: '',
+      // 声明一个对象保存响应的字段对应的标题  然后判断相应字段对应的标题渲染到导航栏
+      obj: {
+        avatar: '修改头像',
+        nickname: '修改昵称',
+        intro: '修改个人简介',
+        position: '修改职位名'
+      }
     }
   },
   created () {
     // 接收路由传的字段
     this.key = this.$route.query.key
 
-    // 声明一个对象保存响应的字段对应的标题  然后判断相应字段对应的标题渲染到导航栏
-    const obj = {
-      avatar: '修改头像',
-      nickname: '修改昵称',
-      intro: '修改个人简介',
-      position: '修改职位名'
-    }
-    this.title = obj[this.key]
+    this.title = this.obj[this.key]
     // 判断是否是文本
     if (this.key !== 'avatar') {
       // 使用mapState辅助函数来获取相应字段对应的内容 渲染到页面上
@@ -78,7 +78,13 @@ export default {
     onClickRight () {
       // 判断用户是否修改了图片保存
       if (this.avatarId === '' && this.key === 'avatar') {
-        this.$toast.fail('请修改图片')
+        this.$toast.fail('请' + this.obj[this.key])
+        return
+      } else if (
+        this.key !== 'avatar' &&
+        this.value === this.userInfo[this.key]
+      ) {
+        this.$toast.fail('请' + this.obj[this.key])
         return
       }
       // 声明一个空对象  用来动态的添加相应的字段和修改的内容

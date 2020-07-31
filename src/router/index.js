@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 // 导入路由跳转组件
+// 我的面经分享组件
+import shareFace from '@/views/shareFace/index.vue'
 // 公司组件
 import company from '@/views/Company/index.vue'
 // 刷题组件
@@ -44,7 +46,9 @@ const routes = [
   // 修改昵称路由配置
   { path: '/setNickname', component: setNickname, meta: { login: true } },
   // 我的消息路由配置
-  { path: '/message', component: message }
+  { path: '/message', component: message },
+  // 我分享的面经配置
+  { path: '/shareFace', component: shareFace }
 ]
 
 const router = new VueRouter({
