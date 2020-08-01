@@ -3,13 +3,12 @@
     class="navBar"
     :title="title"
     :right-text="right"
-    left-arrow
     @click-left="onClickLeft"
     @click-right="onClickRight"
   >
     <!-- 定义了插槽会覆盖属性定义的内容 -->
     <!-- 使用插槽定义左侧内容 -->
-    <template #left>
+    <template #left v-if="showBar">
       <i class="iconfont iconbtn_nav_back"></i>
     </template>
     <!-- 使用插槽定义右侧内容 -->
@@ -26,7 +25,18 @@
 <script>
 export default {
   name: 'navBar',
-  props: ['title', 'right'],
+  props: {
+    title: {
+      type: String
+    },
+    right: {
+      type: String
+    },
+    showBar: {
+      type: Boolean,
+      default: true
+    }
+  },
   methods: {
     onClickLeft () {
       this.$emit('onClickLeft')

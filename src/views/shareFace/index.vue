@@ -1,7 +1,13 @@
 <template>
   <div class="shareFace">
     <navBar title="我分享的面经"></navBar>
-    <van-field v-model="value" placeholder="请输入关键字">
+    <van-field
+      center
+      class="inp"
+      v-model="value"
+      size="large"
+      placeholder="请输入关键字"
+    >
       <template #left-icon>
         <i class="iconfont iconicon_search"></i>
       </template>
@@ -20,4 +26,16 @@ export default {
 }
 </script>
 
-<style></style>
+<style lang="less">
+.shareFace {
+  .inp {
+    height: 34px;
+    background: #f7f4f5;
+    border-radius: 17px;
+
+    .van-field__control {
+      text-align: center;
+    }
+  }
+}
+</style>
