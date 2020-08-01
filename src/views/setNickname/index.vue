@@ -3,7 +3,7 @@
     <div class="navBar">
       <navBar
         :title="title"
-        right="保存"
+        :right="isEdit ? '' : '保存'"
         @onClickLeft="onClickLeft"
         @onClickRight="onClickRight"
       ></navBar>
@@ -54,18 +54,19 @@ export default {
     this.key = this.$route.query.key
 
     this.title = this.obj[this.key]
-    // 判断是否是文本
-    if (this.key !== 'avatar') {
-      // 使用mapState辅助函数来获取相应字段对应的内容 渲染到页面上
-      this.value = this.userInfo[this.key]
-    } else {
-      // 是图片字段
+
+    if (this.key === 'avatar') {
       this.fileList[0].url = this.userInfo[this.key]
     }
+    // 使用mapState辅助函数来获取相应字段对应的内容 渲染到页面上
+    this.value = this.userInfo[this.key]
   },
   // 计算属性
   computed: {
-    ...mapState(['userInfo'])
+    ...mapState(['userInfo']),
+    isEdit () {
+      return this.value === this.userInfo[this.key]
+    }
   },
   methods: {
     ...mapMutations(['SETONEUSERINFO']),
@@ -76,15 +77,8 @@ export default {
     },
     // 点击保存触发的事件
     onClickRight () {
-      // 判断用户是否修改了图片保存
-      if (this.avatarId === '' && this.key === 'avatar') {
-        this.$toast.fail('请' + this.obj[this.key])
-        return
-      } else if (
-        this.key !== 'avatar' &&
-        this.value === this.userInfo[this.key]
-      ) {
-        this.$toast.fail('请' + this.obj[this.key])
+      // 判断是否修改了数据
+      if (this.value === this.userInfo[this.key]) {
         return
       }
       // 声明一个空对象  用来动态的添加相应的字段和修改的内容
@@ -122,16 +116,11 @@ export default {
       // 添加参数
       data.append('files', file.file)
       // 发送请求
-      upload(data)
-        .then(res => {
-          this.fileList[0].status = 'done'
-          this.avatarId = res.data[0].id
-          this.value = this.avatarId
-        })
-        .catch(() => {
-          this.fileList[0].status = 'failed'
-          this.fileList[0].message = '上传失败'
-        })
+      upload(data).then(res => {
+        this.fileList[0].status = 'done'
+
+        this.value = res.data[0].id
+      })
     }
   }
 }
