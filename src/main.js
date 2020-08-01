@@ -19,12 +19,17 @@ import 'vant/lib/index.css'
 import navBar from '@/components/navBar.vue'
 // 导入cell组件
 import cell from '@/components/cell.vue'
+// 导入face组件
+import face from '@/components/face.vue'
 Vue.use(Vant)
 // 全局注册
 // 注册头部导航栏
 Vue.component(navBar.name, navBar)
 // 注册cell单元格
 Vue.component(cell.name, cell)
+// 注册face组件
+Vue.component(face.name, face)
+
 Vue.config.productionTip = false
 new Vue({
   router,
