@@ -45,7 +45,7 @@
     </div>
     <div class="data">
       <h3>面试数据</h3>
-      <ul>
+      <ul class="ul">
         <li>
           <span
             >昨日阅读<i>{{ userInfo.shareData.read.yesterday }}</i></span
@@ -228,11 +228,16 @@ export default {
       font-weight: 600;
       color: #181a39;
     }
-    ul {
+
+    ul.ul {
       display: flex;
       justify-content: space-around;
       align-items: center;
       li {
+        &:first-child {
+          display: block;
+          flex: 0.3;
+        }
         text-align: center;
         span {
           font-size: 10px;

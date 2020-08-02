@@ -91,12 +91,12 @@
               查看更多
             </template>
           </cell>
-          <div class="data" v-for="(item, index) in shareList" :key="index">
+          <div class="Data" v-for="(item, index) in shareList" :key="index">
             <h3>{{ item.title.split('-')[1] }}</h3>
             <p>
               {{ item.content.split('-')[1] }}
             </p>
-            <ul>
+            <ul class="bottom">
               <li>
                 <img :src="item.author.avatar" alt="" />{{
                   item.author.nickname
@@ -198,7 +198,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scope>
 .find {
   .cell {
     .van-cell__title {
@@ -373,7 +373,7 @@ export default {
 
       color: #222222;
     }
-    .data {
+    .Data {
       padding: 0 15px;
       h3 {
         font-size: 16px;
@@ -394,7 +394,7 @@ export default {
         -webkit-line-clamp: 2;
         overflow: hidden;
       }
-      ul {
+      .bottom {
         display: flex;
         align-items: center;
         li {

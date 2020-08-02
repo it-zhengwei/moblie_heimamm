@@ -1,33 +1,76 @@
 <template>
-  <div>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus quo ab
-    doloribus tempore doloremque ipsam in odit quia non, laboriosam laborum
-    eligendi voluptatibus porro asperiores reiciendis dolorum sit officiis
-    expedita qui quis. Libero quod delectus labore rerum, incidunt est, dolore
-    nam eveniet nulla quas voluptatum magnam eaque quaerat optio fuga sequi
-    corporis obcaecati pariatur perferendis aliquam consectetur nesciunt unde
-    quo sit. Tenetur quisquam facilis obcaecati totam nobis consequuntur laborum
-    quia, aliquam vitae provident ratione error laudantium architecto nostrum
-    dolores? Distinctio eligendi, velit repellat sequi quae, ipsum recusandae
-    dolorum blanditiis deleniti minus neque, eum tenetur similique beatae
-    provident quisquam? Totam aliquam asperiores unde, cum reiciendis eveniet
-    quasi ea iusto incidunt voluptatem, autem quae facilis voluptatibus et!
-    Eveniet consectetur dolorum quam libero, commodi qui asperiores nulla
-    voluptate sapiente saepe. Doloribus, velit et quidem qui magni eligendi enim
-    adipisci nisi est! Amet, magni cupiditate asperiores dignissimos obcaecati
-    repellat atque quidem non sed necessitatibus tempore quisquam ipsum soluta
-    mollitia rerum quos! Reprehenderit cupiditate fugit mollitia neque fugiat
-    aperiam tenetur praesentium, deleniti veniam eveniet dolore at. Perferendis
-    mollitia ullam sequi voluptatum. Possimus error facere ipsum doloremque
-    unde, alias deleniti molestias qui nihil explicabo totam hic sint
-    distinctio. Fuga autem doloremque neque? Delectus est nostrum vel?
+  <div class="company">
+    <div class="top">
+      <h1>公司</h1>
+      <van-search
+        shape="round"
+        input-align="center"
+        @search="onSearch"
+        @cancel="onCancel"
+        class="search"
+        v-model="value"
+        placeholder="请输入搜索关键词"
+      />
+    </div>
+    <div class="swipe">
+      <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
+        <van-swipe-item>1</van-swipe-item>
+        <van-swipe-item>2</van-swipe-item>
+        <van-swipe-item>3</van-swipe-item>
+        <van-swipe-item>4</van-swipe-item>
+      </van-swipe>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'company'
+  name: 'company',
+  data () {
+    return {
+      value: ''
+    }
+  },
+  methods: {
+    // 点击键盘搜索或者回车触发
+    onSearch () {},
+    // 点击键盘的取消触发
+    onCancel () {}
+  }
 }
 </script>
 
-<style></style>
+<style lang="less">
+.company {
+  padding: 0 15px;
+  height: 100vh;
+  background-color: #fff;
+  .top {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    h1 {
+      font-size: 18px;
+      font-family: PingFangSC, PingFangSC-Semibold;
+      font-weight: 600;
+
+      color: #222222;
+    }
+    .search {
+      height: 34px;
+      flex: 1;
+    }
+  }
+  .swipe {
+    .my-swipe {
+      .van-swipe-item {
+        color: #fff;
+        font-size: 20px;
+        line-height: 127px;
+        text-align: center;
+        background-color: #39a9ed;
+      }
+    }
+  }
+}
+</style>
