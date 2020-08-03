@@ -70,7 +70,11 @@
       </ul>
     </div>
     <div class="cellList">
-      <cell title="我的面试分享" icon="iconicon_mine_mianjing">
+      <cell
+        title="我的面试分享"
+        @click="shareFace"
+        icon="iconicon_mine_mianjing"
+      >
         <template #default>
           21
         </template></cell
@@ -111,6 +115,10 @@ import { mapState } from 'vuex'
 export default {
   name: 'my',
   methods: {
+    // 跳转到面经分享页面
+    shareFace () {
+      this.$router.push('/shareFace')
+    },
     // 点击跳转到我的资料页面
     profile () {
       this.$router.push('/profile')

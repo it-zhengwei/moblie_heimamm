@@ -19,6 +19,8 @@ import profile from '@/views/profile/index.vue'
 import setNickname from '@/views/setNickname/index.vue'
 // 我的消息组件
 import message from '@/views/My/message.vue'
+// 发现搜索组件
+import findSearch from '@/views/findSearch/index.vue'
 // 导入store
 import store from '@/store/index.js'
 // 导入工具方法
@@ -48,7 +50,9 @@ const routes = [
   // 我的消息路由配置
   { path: '/message', component: message },
   // 我分享的面经配置
-  { path: '/shareFace', component: shareFace }
+  { path: '/shareFace', component: shareFace },
+  // 发现搜索的配置
+  { path: '/findSearch', component: findSearch }
 ]
 
 const router = new VueRouter({

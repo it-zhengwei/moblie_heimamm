@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="data" v-for="(item, index) in shareList" :key="index">
-      <h3>{{ item.title.split('-')[1] }}</h3>
+    <div class="data">
+      <h3 v-html="item.title.split('-')[1]"></h3>
       <p>
         {{ item.content.split('-')[1] }}
       </p>
@@ -10,7 +10,10 @@
           <img :src="item.author.avatar" alt="" />{{ item.author.nickname }}
         </li>
         <li>{{ item.created_at | formatTime }}</li>
-        <li><i class="iconfont iconicon_pinglunliang"></i>{{ item.read }}</li>
+        <li>
+          <i class="iconfont iconicon_pinglunliang"></i
+          >{{ item.article_comments }}
+        </li>
         <li>
           <i class="iconfont iconbtn_dianzan_small_nor"></i>{{ item.star }}
         </li>
@@ -20,17 +23,11 @@
 </template>
 
 <script>
-import moment from 'moment'
 export default {
   name: 'face',
   props: {
-    shareList: {
-      type: Array
-    }
-  },
-  filters: {
-    formatTime (value) {
-      return moment(value).format('YYYY年MM月DD日')
+    item: {
+      type: Object
     }
   }
 }
@@ -46,6 +43,9 @@ export default {
     margin-top: 30px;
     margin-bottom: 10px;
     color: #181a39;
+    span {
+      color: @main-color;
+    }
   }
   p {
     font-size: 13px;

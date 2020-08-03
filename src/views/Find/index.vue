@@ -85,42 +85,22 @@
         finished-text="没有更多了"
         @load="onLoad"
       >
-        <div class="share">
-          <cell title="面经分享">
-            <template #default>
-              查看更多
-            </template>
-          </cell>
-          <div class="Data" v-for="(item, index) in shareList" :key="index">
-            <h3>{{ item.title.split('-')[1] }}</h3>
-            <p>
-              {{ item.content.split('-')[1] }}
-            </p>
-            <ul class="bottom">
-              <li>
-                <img :src="item.author.avatar" alt="" />{{
-                  item.author.nickname
-                }}
-              </li>
-              <li>{{ item.created_at | formatTime }}</li>
-              <li>
-                <i class="iconfont iconicon_pinglunliang"></i>{{ item.read }}
-              </li>
-              <li>
-                <i class="iconfont iconbtn_dianzan_small_nor"></i
-                >{{ item.star }}
-              </li>
-            </ul>
-          </div>
-        </div>
+        <cell title="面经分享" class="cityList" @click="shareFace">
+          <template #default>
+            查看更多
+          </template>
+        </cell>
+        <face
+          v-for="(item, index) in shareList"
+          :item="item"
+          :key="index"
+        ></face>
       </van-list>
     </div>
   </van-pull-refresh>
 </template>
 
 <script>
-// 导入moment
-import moment from 'moment'
 // 导入api
 import { technic, cityData, share } from '@/api/find.js'
 export default {
@@ -142,12 +122,33 @@ export default {
       // 控制下拉刷新是否加载
       loading: false,
       // 是否加载完毕
-      finished: false
+      finished: false,
+      // 面经的起始值
+      star: 0,
+      // 面经的条数
+      limit: 5
     }
   },
   methods: {
+    // 跳转到shareFace组件
+    shareFace () {
+      this.$router.push('/shareFace')
+    },
     // 下拉刷新执行的回调函数
-    onLoad () {},
+    onLoad () {
+      // 获取面经列表
+      share({ star: this.star, limit: this.limit }).then(res => {
+        res.data.list.forEach(v => {
+          v.author.avatar = process.env.VUE_APP_URL + v.author.avatar
+        })
+        this.shareList.push(...res.data.list)
+        this.star += this.limit
+        this.loading = false
+        if (this.shareList.length >= res.data.total) {
+          this.finished = true
+        }
+      })
+    },
     // 下拉刷新执行的回调函数
     onRefresh () {
       this.getData()
@@ -167,14 +168,6 @@ export default {
         this.cityList = res.data
         this.some = this.cityList.yearSalary.reverse().slice(0, 3)
       })
-
-      // 获取面经列表
-      share({ limit: 3 }).then(res => {
-        res.data.list.forEach(v => {
-          v.author.avatar = process.env.VUE_APP_URL + v.author.avatar
-        })
-        this.shareList = res.data.list
-      })
     },
     // 展开更多的事件
     isShow () {
@@ -188,12 +181,6 @@ export default {
   },
   created () {
     this.getData()
-  },
-  // 过滤器
-  filters: {
-    formatTime (time) {
-      return moment(time).format('YYYY年MM月DD日')
-    }
   }
 }
 </script>

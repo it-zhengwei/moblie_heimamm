@@ -23,5 +23,11 @@ function share (params) {
     params
   })
 }
+// 获取面向技巧热搜
+function technicTopSearch () {
+  return req({
+    url: '/articles/technicTopSearch'
+  })
+}
 // 暴露出去
-export { technic, cityData, share }
+export { technic, cityData, share, technicTopSearch }
