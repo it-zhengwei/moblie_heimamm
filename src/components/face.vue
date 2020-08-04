@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="data">
-      <h3 v-html="item.title.split('-')[1]"></h3>
+      <h3 v-html="item.title.split('-')[1]" @click="shareDetails(item.id)"></h3>
       <p>
         {{ item.content.split('-')[1] }}
       </p>
@@ -28,6 +28,11 @@ export default {
   props: {
     item: {
       type: Object
+    }
+  },
+  methods: {
+    shareDetails (id) {
+      this.$router.push('/shareDedails/' + id)
     }
   }
 }

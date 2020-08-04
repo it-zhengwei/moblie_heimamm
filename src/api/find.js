@@ -29,5 +29,38 @@ function technicTopSearch () {
     url: '/articles/technicTopSearch'
   })
 }
+// 获取面经的详情
+function sharedetails (id) {
+  return req({
+    url: '/articles/share/' + id
+  })
+}
+// 获取面经评论
+function comments ({ id, start, limit }) {
+  return req({
+    url: '/articles/comments/' + id,
+    params: {
+      start,
+      limit
+    }
+  })
+}
+// 发表评论
+function setComments (data) {
+  return req({
+    url: '/articles/comments',
+    method: 'post',
+    needToken: true,
+    data
+  })
+}
 // 暴露出去
-export { technic, cityData, share, technicTopSearch }
+export {
+  technic,
+  cityData,
+  share,
+  technicTopSearch,
+  sharedetails,
+  comments,
+  setComments
+}

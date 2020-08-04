@@ -17,11 +17,12 @@ import Obj from '@/components/index.js'
 // 导入vant组件库
 import Vant from 'vant'
 import 'vant/lib/index.css'
-
+// 导入自己封装的组件
+import Login from '@/plugin/index.js'
 Vue.use(Vant)
 // 全局注册
 Vue.use(Obj)
-
+Vue.use(Login)
 Vue.config.productionTip = false
 new Vue({
   router,

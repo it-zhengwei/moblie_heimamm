@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 // 导入路由跳转组件
+
 // 我的面经分享组件
 import shareFace from '@/views/shareFace/index.vue'
 // 公司组件
@@ -21,6 +22,8 @@ import setNickname from '@/views/setNickname/index.vue'
 import message from '@/views/My/message.vue'
 // 发现搜索组件
 import findSearch from '@/views/findSearch/index.vue'
+// 导入面经详情组件
+import shareDedails from '@/views/shareDetails/index.vue'
 // 导入store
 import store from '@/store/index.js'
 // 导入工具方法
@@ -52,7 +55,9 @@ const routes = [
   // 我分享的面经配置
   { path: '/shareFace', component: shareFace },
   // 发现搜索的配置
-  { path: '/findSearch', component: findSearch }
+  { path: '/findSearch', component: findSearch },
+  // 面经详情的配置
+  { path: '/shareDedails/:id', component: shareDedails }
 ]
 
 const router = new VueRouter({

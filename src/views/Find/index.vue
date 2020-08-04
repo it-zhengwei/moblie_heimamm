@@ -137,7 +137,7 @@ export default {
     // 下拉刷新执行的回调函数
     onLoad () {
       // 获取面经列表
-      share({ star: this.star, limit: this.limit }).then(res => {
+      share({ start: this.star, limit: this.limit }).then(res => {
         res.data.list.forEach(v => {
           v.author.avatar = process.env.VUE_APP_URL + v.author.avatar
         })

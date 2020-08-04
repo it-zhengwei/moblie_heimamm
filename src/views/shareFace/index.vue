@@ -54,7 +54,7 @@ export default {
     // 触底加载触发的方法
     onLoad () {
       // 获取面经列表
-      share({ star: this.star, limit: this.limit }).then(res => {
+      share({ start: this.star, limit: this.limit }).then(res => {
         res.data.list.forEach(v => {
           v.author.avatar = process.env.VUE_APP_URL + v.author.avatar
         })
