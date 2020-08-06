@@ -115,4 +115,9 @@ router.beforeEach((to, from, next) => {
     next()
   }
 })
+// 后置导航守卫
+router.afterEach((to, from) => {
+  // 已经进入了目标路由to
+  window.scrollTo(0, 0)
+})
 export default router

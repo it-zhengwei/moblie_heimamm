@@ -89,7 +89,9 @@
               <span>{{ item.star }}</span>
               <i
                 class="iconfont iconbtn_dianzan_small_nor"
-                :class="{ comment: commentstart }"
+                :class="{
+                  comment: userInfo && userInfo.starComments.includes(item.id)
+                }"
                 @click="commentsStar(item)"
               ></i>
             </div>
@@ -109,30 +111,32 @@
             </div>
           </div>
 
-          <!-- 底部盒子 -->
-          <div class="bottom-box">
-            <div class="input" @click="popUp()">我来补充两句</div>
-            <div class="shoucang">
-              <i
-                class="iconfont iconbtn_shoucang_nor"
-                :class="{ collect: collect }"
-                @click="shoucang"
-              ></i>
-              {{ collectNum }}
+          <van-sticky>
+            <!-- 底部盒子 -->
+            <div class="bottom-box">
+              <div class="input" @click="popUp()">我来补充两句</div>
+              <div class="shoucang">
+                <i
+                  class="iconfont iconbtn_shoucang_nor"
+                  :class="{ collect: collect }"
+                  @click="shoucang"
+                ></i>
+                {{ collectNum }}
+              </div>
+              <div class="star">
+                <i
+                  class="iconfont iconbtn_dianzan_small_nor"
+                  :class="{ active: praise }"
+                  @click="star"
+                ></i>
+                {{ detailsList.star }}
+              </div>
+              <div class="share" @click="fenxiang">
+                <i class="iconfont iconbtn_share"></i>
+                {{ detailsList.collect }}
+              </div>
             </div>
-            <div class="star">
-              <i
-                class="iconfont iconbtn_dianzan_small_nor"
-                :class="{ active: praise }"
-                @click="star"
-              ></i>
-              {{ detailsList.star }}
-            </div>
-            <div class="share" @click="fenxiang">
-              <i class="iconfont iconbtn_share"></i>
-              {{ detailsList.collect }}
-            </div>
-          </div>
+          </van-sticky>
           <!-- 底部回复弹出层 -->
           <van-popup
             :overlay-style="{ 'background-color': 'transparent' }"
@@ -152,7 +156,7 @@
             <span @click="submit">发送</span>
           </van-popup>
           <!-- 分享弹出层 -->
-          <van-popup v-model="showShare">
+          <van-popup v-model="showShare" @click-overlay="imgUrl = ''">
             <div v-if="!imgUrl" class="share-box" ref="xxxx">
               <div class="text">
                 长按图片下载并分享
@@ -249,19 +253,6 @@ export default {
       } else {
         return false
       }
-    },
-    // 评论点赞
-    commentstart () {
-      // 判断用户是否登录
-      if (this.userInfo) {
-        if (this.userInfo.starComments.includes(this.Id)) {
-          return true
-        } else {
-          return false
-        }
-      } else {
-        return false
-      }
     }
   },
   methods: {
@@ -285,19 +276,14 @@ export default {
     },
     // 评论点赞
     async commentsStar (data) {
-      this.Id = data.id
+      this.Id = data
       await this.$login()
-      this.$toast.loading({ decution: 0, message: '点赞中..' })
+
       const res = await articleCommentsStar({ id: data.id })
 
       // data.star = res.data.num
       // 修改vuex里的点赞数组
       this.SETONEUSERINFO({ name: 'starComments', value: res.data.list })
-      if (this.commentstart) {
-        this.$toast.success('点赞成功')
-      } else {
-        this.$toast.success('取消点赞')
-      }
     },
     // 收藏功能
     async shoucang () {
