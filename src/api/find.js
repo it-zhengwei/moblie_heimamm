@@ -54,13 +54,43 @@ function setComments (data) {
     data
   })
 }
+// 点赞功能
+function articlesStar (data) {
+  return req({
+    url: '/articles/star',
+    needToken: true,
+    method: 'post',
+    data
+  })
+}
+// 收藏功能
+function articlesCollect (data) {
+  return req({
+    url: '/articles/collect',
+    method: 'post',
+    data,
+    needToken: true
+  })
+}
+// 面经评论点赞
+function articleCommentsStar (data) {
+  return req({
+    url: '/article-comments/star',
+    method: 'post',
+    data,
+    needToken: true
+  })
+}
 // 暴露出去
 export {
+  articlesStar,
   technic,
   cityData,
   share,
   technicTopSearch,
   sharedetails,
   comments,
-  setComments
+  setComments,
+  articlesCollect,
+  articleCommentsStar
 }

@@ -7,6 +7,9 @@ export default new Vuex.Store({
   state: {
     islogin: false,
     userInfo: '',
+    // 保存点赞列表
+    startList: [],
+    // 省市区数据
     cityList: cityList
   },
   mutations: {

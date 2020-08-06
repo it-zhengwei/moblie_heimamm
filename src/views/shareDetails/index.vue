@@ -87,7 +87,11 @@
             </div>
             <div class="zan-box">
               <span>{{ item.star }}</span>
-              <i class="iconfont iconbtn_dianzan_small_nor"></i>
+              <i
+                class="iconfont iconbtn_dianzan_small_nor"
+                :class="{ comment: commentstart }"
+                @click="commentsStar(item)"
+              ></i>
             </div>
           </div>
           <!-- 评论内容 -->
@@ -109,14 +113,22 @@
           <div class="bottom-box">
             <div class="input" @click="popUp()">我来补充两句</div>
             <div class="shoucang">
-              <i class="iconfont iconbtn_shoucang_nor"></i>
-              {{ detailsList.share }}
+              <i
+                class="iconfont iconbtn_shoucang_nor"
+                :class="{ collect: collect }"
+                @click="shoucang"
+              ></i>
+              {{ collectNum }}
             </div>
             <div class="star">
-              <i class="iconfont iconbtn_dianzan_small_nor"></i>
+              <i
+                class="iconfont iconbtn_dianzan_small_nor"
+                :class="{ active: praise }"
+                @click="star"
+              ></i>
               {{ detailsList.star }}
             </div>
-            <div class="share" @click="showShare = true">
+            <div class="share" @click="fenxiang">
               <i class="iconfont iconbtn_share"></i>
               {{ detailsList.collect }}
             </div>
@@ -141,26 +153,25 @@
           </van-popup>
           <!-- 分享弹出层 -->
           <van-popup v-model="showShare">
-            <div class="share-box">
+            <div v-if="!imgUrl" class="share-box" ref="xxxx">
               <div class="text">
                 长按图片下载并分享
               </div>
               <div class="share-content-box">
                 <div class="title">
-                  拿到百度音乐的offer后，我总结了面试产品实习的几点经验
+                  {{ detailsList.title }}
                 </div>
                 <div class="user-box">
-                  <img src="@/assets/01.jpg" alt="" />
-                  <span>热爱生活</span>
+                  <img :src="detailsList && detailsList.author.avatar" alt="" />
+                  <span>{{ detailsList && detailsList.author.nickname }}</span>
                 </div>
-                <div class="content">
-                  先说一下我的基本情况，本人是北京大学前沿交叉学院数据科学专业研一学生，本科在兰州大学信息安全专业。之所以选择走产品而不是技术，代码能力马马虎虎，而且对编程不感兴趣，最关键的是我性格比较外向，比起每天闷头敲代码，更喜欢和人打交道。于是乎，我开始从各种渠道了解产品经理的前世今生，从《人人都是产品经理》这本书和人人都是产品经理社区，再到知乎，了解到了很多笼统的概念，但是感觉如果没有亲身经历，理论和框架就显得很空洞，而且产品不像技术，门槛相对略低，所以更需要实习的经历，再加上本科的时候从未有过实习经历，所以我很迫切的想找一份产品实习。在面试了滴滴出行、回家吃饭和百度音乐之后，拿到了后面两家的Offer，最终选择了百度音乐。
-                </div>
-                <img class="logo" src="@/assets/01.jpg" alt="" />
-                <img class="code" src="@/assets/01.jpg" alt="" />
+                <div class="content" v-html="detailsList.content"></div>
+                <img class="logo" src="@/assets/img_share_logo.png" alt="" />
+                <img class="code" :src="src" alt="" />
                 <div class="direction">长按识别二维码查看原文</div>
               </div>
             </div>
+            <img v-else class="imgger" :src="imgUrl" alt="" />
           </van-popup>
         </div>
       </van-list>
@@ -169,11 +180,23 @@
 </template>
 
 <script>
+import html2canvas from 'html2canvas'
+import QRCode from 'qrcode'
+// 导入map辅助函数
+import { mapState, mapMutations } from 'vuex'
 // 导入api
-import { sharedetails, comments, setComments } from '@/api/find.js'
+import {
+  sharedetails,
+  comments,
+  setComments,
+  articlesStar,
+  articlesCollect,
+  articleCommentsStar
+} from '@/api/find.js'
 export default {
   data () {
     return {
+      imgUrl: '',
       show: false,
       showShare: false,
       value: '',
@@ -190,42 +213,148 @@ export default {
       loading: false,
       finished: false,
       // 把item提升
-      isItem: ''
+      isItem: '',
+      // 收藏数
+      collectNum: 0,
+      Id: 0,
+      src: ''
+    }
+  },
+  // 计算属性
+  computed: {
+    ...mapState(['userInfo']),
+
+    // 点赞
+    praise () {
+      // 判断用户是否登录
+      if (this.userInfo) {
+        if (this.userInfo.starArticles.includes(+this.$route.params.id)) {
+          return true
+        } else {
+          return false
+        }
+      } else {
+        return false
+      }
+    },
+    // 收藏
+    collect () {
+      // 判断用户是否登录
+      if (this.userInfo) {
+        if (this.userInfo.collectArticles.includes(+this.$route.params.id)) {
+          return true
+        } else {
+          return false
+        }
+      } else {
+        return false
+      }
+    },
+    // 评论点赞
+    commentstart () {
+      // 判断用户是否登录
+      if (this.userInfo) {
+        if (this.userInfo.starComments.includes(this.Id)) {
+          return true
+        } else {
+          return false
+        }
+      } else {
+        return false
+      }
     }
   },
   methods: {
-    // 发送功能
-    submit () {
-      this.$login()
-        .then(() => {
-          const data = {
-            content: this.value
-          }
-          // 判断是写评论还是回复评论
-          if (this.isItem) {
-            data.parent = this.isItem.id
-            setComments(data).then(res => {
-              this.isItem.children_comments.push(res.data)
-            })
-          } else {
-            data.article = this.$route.params.id
-            setComments(data).then(res => {
-              res.data.author.avatar =
-                process.env.VUE_APP_URL + res.data.author.avatar
-              this.commentList.unshift(res.data)
-            })
-          }
+    ...mapMutations(['SETONEUSERINFO']),
+    // 分享
+    async fenxiang () {
+      this.showShare = true
+      window.scrollTo(0, 0)
+      await this.$login()
 
-          // 提示用户
-          this.$toast.success('发布成功')
-          // 关闭弹窗
-          this.show = false
-          // 清空输入框
-          this.value = ''
+      this.$nextTick(async () => {
+        const canvas = await html2canvas(this.$refs.xxxx[0], {
+          useCORS: true,
+          backgroundColor: null
         })
-        .catch(() => {
-          window.console.log('请登录')
-        })
+
+        const imgUrl = canvas.toDataURL()
+
+        this.imgUrl = imgUrl
+      })
+    },
+    // 评论点赞
+    async commentsStar (data) {
+      this.Id = data.id
+      await this.$login()
+      this.$toast.loading({ decution: 0, message: '点赞中..' })
+      const res = await articleCommentsStar({ id: data.id })
+
+      // data.star = res.data.num
+      // 修改vuex里的点赞数组
+      this.SETONEUSERINFO({ name: 'starComments', value: res.data.list })
+      if (this.commentstart) {
+        this.$toast.success('点赞成功')
+      } else {
+        this.$toast.success('取消点赞')
+      }
+    },
+    // 收藏功能
+    async shoucang () {
+      // 需要登录
+      await this.$login()
+      this.$toast.loading({ decution: 0, message: '收藏中..' })
+      const res = await articlesCollect({ id: +this.$route.params.id })
+      this.collectNum = res.data.num
+      // 修改vuex里的点赞数组
+      this.SETONEUSERINFO({ name: 'collectArticles', value: res.data.list })
+      if (this.collect) {
+        this.$toast.success('收藏成功')
+      } else {
+        this.$toast.success('取消收藏')
+      }
+    },
+    // 点赞功能
+    async star () {
+      // 需要登录
+      await this.$login()
+      this.$toast.loading({ decution: 0, message: '点赞中..' })
+      const res = await articlesStar({ article: +this.$route.params.id })
+      this.detailsList.star = res.data.num
+      // 修改vuex里的点赞数组
+      this.SETONEUSERINFO({ name: 'starArticles', value: res.data.list })
+      if (this.praise) {
+        this.$toast.success('点赞成功')
+      } else {
+        this.$toast.success('取消点赞')
+      }
+    },
+    // 提交功能
+    async submit () {
+      await this.$login()
+
+      const data = {
+        content: this.value
+      }
+      // 判断是写评论还是回复评论
+      if (this.isItem) {
+        data.parent = this.isItem.id
+        const res = await setComments(data)
+        this.isItem.children_comments.push(res.data)
+      } else {
+        data.article = this.$route.params.id
+        const setCom = await setComments(data)
+        setCom.data.author.avatar =
+          process.env.VUE_APP_URL + setCom.data.author.avatar
+        this.commentList.unshift(setCom.data)
+      }
+
+      // 提示用户
+      this.$toast.success('发布成功')
+      // 关闭弹窗
+      this.show = false
+      // 清空输入框
+      this.value = ''
     },
     onClickLeft () {
       this.$router.go(-1)
@@ -240,37 +369,39 @@ export default {
       }
       this.show = true
     },
-    onLoad () {
+    async onLoad () {
       // 面经评论
-      comments({
+      const res = await comments({
         id: this.$route.params.id,
         start: this.start,
         limit: this.limit
-      }).then(res => {
-        res.data.list.forEach(v => {
-          if (v.author.avatar) {
-            v.author.avatar = process.env.VUE_APP_URL + v.author.avatar
-          }
-        })
-        this.total = res.data.total
-        this.commentList.push(...res.data.list)
-        this.start += this.limit
-        this.loading = false
-        if (this.commentList.length >= res.data.total) {
-          this.finished = true
+      })
+      res.data.list.forEach(v => {
+        if (v.author.avatar) {
+          v.author.avatar = process.env.VUE_APP_URL + v.author.avatar
         }
       })
+      this.total = res.data.total
+      this.commentList.push(...res.data.list)
+
+      this.start += this.limit
+      this.loading = false
+      if (this.commentList.length >= res.data.total) {
+        this.finished = true
+      }
     }
   },
-  created () {
+  async mounted () {
+    const url = await QRCode.toDataURL(window.location.href)
+    this.src = url
+  },
+  async created () {
     // 面经详情
-    sharedetails(this.$route.params.id).then(res => {
-      if (res.data.author.avatar) {
-        res.data.author.avatar =
-          process.env.VUE_APP_URL + res.data.author.avatar
-      }
-      this.detailsList = res.data
-    })
+    const res = await sharedetails(this.$route.params.id)
+    if (res.data.author.avatar) {
+      res.data.author.avatar = process.env.VUE_APP_URL + res.data.author.avatar
+    }
+    this.detailsList = res.data
   }
 }
 </script>
@@ -325,6 +456,9 @@ export default {
       .iconfont {
         color: @minor-font-color;
         font-size: 24px;
+      }
+      .comment {
+        color: green !important;
       }
     }
   }
@@ -416,9 +550,15 @@ export default {
     }
     .shoucang {
       margin-right: 24px;
+      .collect {
+        color: yellow;
+      }
     }
     .star {
       margin-right: 24px;
+      .active {
+        color: red;
+      }
     }
   }
   .input-pop {
@@ -441,6 +581,10 @@ export default {
       margin-top: 11px;
     }
   }
+  .imgger {
+    width: 311px;
+    height: 553px;
+  }
   // 底部弹出层
   .share-box {
     width: 311px;
@@ -449,7 +593,7 @@ export default {
     background-position-x: 0;
     background-position-y: 0;
     padding: 0 15px 15px;
-    // background-image: url('../../assets/ios3x_img_share_bj@3x.png');
+    background-image: url('../../assets/img_share_bj.png');
     display: flex;
     flex-direction: column;
     .text {
